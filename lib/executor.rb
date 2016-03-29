@@ -1,6 +1,3 @@
-
-
-
 class Executor 
   def initialize(source, target, options = {})
     @files = [

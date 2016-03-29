@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 
+require 'byebug'
 Dir["./lib/*"].each {|file| require file }
 Dir["./models/*"].each {|file| require file }
-require 'byebug'
 
 if ARGV.length != 5
   puts '5 arguments are expected'

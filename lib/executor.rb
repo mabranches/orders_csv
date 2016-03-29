@@ -1,16 +1,14 @@
-Dir["./lib/csv*"].each {|file| require file }
-Dir["./models/*"].each {|file| require file }
-require 'byebug'
 
-  FILES = [
-     {var: :coupons, location:'spec/csvs/coupons.csv',method: :populate_hash, klass: Coupon},
-     {var: :products, location:'spec/csvs/products.csv',method: :populate_hash, klass: Product},
-     {var: :orders_csv, location:'spec/csvs/orders.csv',method: :populate_array, klass: OrderCSV},
-     {var: :order_items, location:'spec/csvs/order_items.csv',method: :populate_array, klass: OrderItem},
-  ]
+
 
 class Executor 
-  def initialize(source, target)
+  def initialize(source, target, options = {})
+    @files = [
+      {var: :coupons, location: options[:coupons_location], method: :populate_hash, klass: Coupon},
+      {var: :products, location: options[:products_location], method: :populate_hash, klass: Product},
+      {var: :orders_csv, location: options[:orders_location], method: :populate_array, klass: OrderCSV},
+      {var: :order_items, location: options[:order_items_location], method: :populate_array, klass: OrderItem},
+    ]    
     @source = source
     @target = target
     @orders_hash = {}
@@ -43,7 +41,7 @@ class Executor
   #source.location = 'csvs/cupons'
   #@products = source.populate_hash(Product)
   def read_data
-    FILES.each do |file|
+    @files.each do |file|
       @source.location = file[:location]
       instance_variable_set('@' + file[:var].to_s,
         @source.send(file[:method], file[:klass]))
@@ -63,6 +61,3 @@ class Executor
 
 end
 
-exec = Executor.new(Source::CSVSource.new, Target::CSVTarget.new('./result.csv'))
-
-exec.run

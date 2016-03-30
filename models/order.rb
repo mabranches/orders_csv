@@ -5,15 +5,22 @@ MAX_DISCOUNT=0.4
 
 class Order
   attr_accessor :id, :products
-  def initialize(id, products = nil)
+  def initialize(id)
     @id = id.to_i
     @total = 0.0
     @n_products = 0
+    @product_ids = []
   end
 
   def add_product(product)
+    
+    if (@product_ids.include?(product.id))
+      puts "Can't add the same product twice"
+      return
+    end
     @n_products += 1
     @total += product.price
+    @product_ids << product.id
   end
   
   def final_value

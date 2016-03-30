@@ -24,6 +24,10 @@ describe Order do
   end 
  
   it "should not be able to use the same product twice" do
+    @order.add_product(Product.new(1,10))
+    @order.add_product(Product.new(1,10))
+     
+    expect(@order.final_value).to eq(10)
   end
  
 end
